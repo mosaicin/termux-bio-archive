@@ -1,0 +1,50 @@
+<article class="article">
+  <%= link_to "← ко всем материалам", root_path, class: "back" %>
+  <p class="kicker">биография · <%= @biography.status %></p>
+  <h1><%= @biography.title %></h1>
+  <p class="lede"><%= @biography.summary %></p>
+
+  <div class="columns">
+    <section>
+      <div class="prose"><%= simple_format(@biography.body) %></div>
+      <h2>Источники</h2>
+      <div class="source-list">
+        <% @biography.sources.each do |source| %>
+          <div class="source"><strong><%= source.title %></strong><a href="<%= source.url %>" rel="noopener noreferrer"><%= source.url %></a><p><%= source.notes %></p></div>
+        <% end %>
+      </div>
+    </section>
+    <aside class="notice-box side-note">
+      <strong>Статус материала</strong>
+      <p><%= @biography.fictional? ? "Художественный персонаж или реконструкция." : "Материал требует проверки по источникам." %></p>
+      <p>Ответы публикуются только после редакционной проверки. Открытый вопрос не является обвинением.</p>
+    </aside>
+  </div>
+
+  <section class="forms-grid">
+    <div class="card">
+      <h2>Право на ответ</h2>
+      <p class="muted">Сообщение будет сохранено как pending и не появится публично автоматически.</p>
+      <%= form_with model: @response, url: biography_responses_path(@biography.id) do |form| %>
+        <%= form.text_field :name, placeholder: "Имя или псевдоним", required: true %>
+        <%= form.text_area :body, placeholder: "Исправление, уточнение или ответ", required: true %>
+        <%= form.submit "Отправить на проверку" %>
+      <% end %>
+    </div>
+    <div class="card">
+      <h2>Открытый вопрос</h2>
+      <p class="muted">Формулируйте вопрос проверяемо и без призывов к преследованию.</p>
+      <%= form_with model: @open_question, url: biography_questions_path(@biography.id) do |form| %>
+        <%= form.text_area :prompt, placeholder: "Что нужно проверить?", required: true %>
+        <%= form.submit "Сохранить вопрос" %>
+      <% end %>
+    </div>
+  </section>
+
+  <section class="questions">
+    <h2>Архив открытых вопросов</h2>
+    <% @biography.open_questions.where.not(status: "archived").each do |question| %>
+      <div class="question"><span class="status status-<%= question.status %>"><%= question.status %></span><p><%= question.prompt %></p></div>
+    <% end %>
+  </section>
+</article>

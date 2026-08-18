@@ -1,0 +1,27 @@
+<section class="hero">
+  <p class="kicker">документальная мастерская</p>
+  <h1>Биографии, источники и вопросы без заранее вынесенного приговора.</h1>
+  <p class="lede">Проект помогает собирать проверяемые материалы, версии и право на ответ. Это не суд, не список обвинений и не место для самосуда.</p>
+</section>
+
+<section class="notice-box">
+  <strong>Редакционное правило.</strong> Непроверенные сведения обозначаются явно. Люди не описываются как опасные по принадлежности к диагнозу, происхождению, гендеру или социальному положению.
+</section>
+
+<section class="archive-grid">
+  <% if @biographies.any? %>
+    <% @biographies.each do |biography| %>
+      <article class="card">
+        <span class="status status-<%= biography.status %>"><%= biography.status %></span>
+        <h2><%= link_to biography.title, biography_path(biography.slug) %></h2>
+        <p><%= biography.summary %></p>
+        <small>Автор записи: <%= biography.author_name %></small>
+      </article>
+    <% end %>
+  <% else %>
+    <div class="empty card">
+      <h2>Архив пока пуст</h2>
+      <p>Добавьте первый материал через консоль Rails, отделив источники от гипотез.</p>
+    </div>
+  <% end %>
+</section>

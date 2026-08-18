@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <title><%= content_for(:title) || "Архив открытых вопросов" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "application" %>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="<%= root_path %>">Архив открытых вопросов</a>
+      <span class="header-note">источники · версии · право на ответ</span>
+    </header>
+    <% if notice %><p class="flash notice"><%= notice %></p><% end %>
+    <% if alert %><p class="flash alert"><%= alert %></p><% end %>
+    <main><%= yield %></main>
+  </body>
+</html>
